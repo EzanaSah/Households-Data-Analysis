@@ -17,51 +17,12 @@ import pyodbc # ODBC = Open Database Connectivity, which is the standard API for
 import pandas as pd # for data analysis
 import numpy as np # for numerical processing
 import os
-from urllib.request import urlopen # for web scraping
-from bs4 import BeautifulSoup as soup # for web scraping
+
 
 ### ---------- CANADIAN FORCES BASES -----------
-
-# =============================================================================
-# 
-# ---- SCRAPE CFB (ATTEMPT) WITH BEAUTIFULSOUP -----
-# 
-# # Scrap Statistics Canada website below for CFB bases 
-# 
+ 
 CFB_url = "https://www.canada.ca/en/department-national-defence/services/benefits-military/military-housing/locations.html"
-# 
-# CFB_site = urlopen(CFB_url)
-# CFB_html = CFB_site.read()
-# 
-# # HTML Parsing with Beautiful Soup
-# 
-# CFB_soup = soup(CFB_html, "html.parser")
-# 
-# # Location of the individual rows in the table 
-# 
-# CFB_soup.body.main.div.table.tbody.tr.td
-# 
-# # Inspect the HTML that you are scraping using soup.find.All()
-#     # Find the specfic HTML section you want - the table
-#     # e.g. soup.findAll("div", {"class","item-container"})
-#         # specify the attributes in a dictionary, if applicable
-#         # Use jsbeautifier.org to view the HTML in proper format
-#         
-# CFB_table = CFB_soup.body.main.div.table
-# 
-# CFB_row = CFB_soup.body.main.div.table.tbody.tr.text.strip()
-# 
-# count = 0
-# for row in CFB_table.tbody.tr:
-#     # Check whether the row is Ontario 
-#     # if 'Ontario' in row: # in CFB_soup.body.main.div.table.tbody.tr.text.strip():
-#     count+=1
-#     print(count)
-#     print(row.text.strip())
-#     # Go to the site within the second column
-#     next_page = 'www.canada.ca'+CFB_soup.body.main.div.table.tbody.tr.a["href"]  
-#     
-# =============================================================================
+
 
 ### ------ SCRAPING CFB JUST USING PANDAS -------
 
@@ -110,8 +71,8 @@ cfb_table = pd.DataFrame({'name':['Ottawa C','Kingston C','Quinte West C','Petaw
 
 # Specify Database Details
 
-server = 'CACBIKDCDBMSQ05'
-ompf_database = 'PT_Bkup'
+server = '************'
+ompf_database = '*******'
 
 # Specify the driver, server, and database (trusted connection uses MS Authentication)
 
@@ -201,7 +162,6 @@ final_hhs.drop(['CFBHH_x'], axis=1, inplace=True)
 
 final_hhs = final_hhs.assign(Total_HHs = lambda x: x['RUHH'] + x['RDUHH'] + x['FRUHH'] +
                             x['Timeshare_Props_rollup'] + x['Timeshare_HH_rollup'] + x['CFBHH_rollup'])
-
 
 final_hhs
 
